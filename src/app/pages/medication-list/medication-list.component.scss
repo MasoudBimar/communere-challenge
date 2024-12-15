@@ -1,0 +1,32 @@
+.medicator{
+  margin: 0 10% 0 10%;
+  .medicator-header{
+    .title {
+      text-align: center;
+      margin-top: 25px;
+    }
+  }
+  .medicator-toolbar{
+    display: flex;
+    .search-box {
+      align-items: center;
+      margin-right: auto;
+      margin-left: auto;
+      border-radius: 25px;
+      padding: 4px 30px 4px 20px;
+      min-width: 500px;
+    }
+  }
+
+  .table{
+    margin-top: 10px;
+  }
+}
+
+
+
+.loading {
+  text-align: center;
+  line-height: 300px;
+  font-size: 2rem;
+}
