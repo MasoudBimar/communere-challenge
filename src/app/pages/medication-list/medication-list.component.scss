@@ -1,29 +1,53 @@
-.medicator{
+.medicator {
   margin: 0 10% 0 10%;
-  .medicator-header{
+
+  .medicator-header {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .medicator-logo {
+      height: 48px;
+      width: 48px;
+      display: inline-block;
+    }
+
     .title {
       text-align: center;
-      margin-top: 25px;
-    }
-  }
-  .medicator-toolbar{
-    display: flex;
-    .search-box {
-      align-items: center;
-      margin-right: auto;
-      margin-left: auto;
-      border-radius: 25px;
-      padding: 4px 30px 4px 20px;
-      min-width: 500px;
+      display: inline-block;
     }
   }
 
-  .table{
+  .medicator-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .search-box {
+      margin: 0 auto;
+      padding: 10px;
+      margin-right: 22%;
+      font-size: 16px;
+      border-radius: 24px;
+      width: 600px;
+      box-sizing: border-box;
+    }
+
+    .add-button {
+      position: relative;
+      right: 0;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .table {
     margin-top: 10px;
   }
 }
-
-
 
 .loading {
   text-align: center;

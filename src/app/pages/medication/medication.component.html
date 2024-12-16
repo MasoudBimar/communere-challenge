@@ -1,195 +1,168 @@
-<div
-  class="modal show"
-  style="display: block"
-  id="exampleModalCenter"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalCenterTitle"
+<app-modal formId="medicationForm" confirmTitle="Save Medication" (closeClicked)="closeModal()" (confirmClicked)="submit()">
+  <form
+  [formGroup]="medicationForm"
+  id="medicationForm"
+  class="form"
+  (ngSubmit)="submit()"
+  #ngForm="ngForm"
 >
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add Medication</h5>
-        {{medicationForm.value| json}}
-      </div>
-      <div class="modal-body">
-        <form
-          [formGroup]="medicationForm"
-          id="medicationForm"
-          class="form"
-          (ngSubmit)="submit()"
-          #ngForm="ngForm"
-        >
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              [ngClass]="{
-                invalid: medicationForm.get('medicationName')?.invalid
-              }"
-              id="medicationName"
-              name="medicationName"
-              formControlName="medicationName"
-              aria-describedby="medicationNameHelp"
-              placeholder="Medication Name"
-              autocomplete="off"
-            />
-            @if (ngForm.submitted &&
-            medicationForm.get('medicationName')?.invalid) { @if
-            (medicationForm.get('medicationName')?.errors?.['minlength']) {
-            <small class="form-text text-danger">
-              Medication Name should be at least 3 characters
-            </small>
-            } @if (medicationForm.get('medicationName')?.errors?.['required']) {
-            <small class="form-text text-danger">
-              Medication Name is required
-            </small>
-            } } @else {
-            <small id="medicationNameHelp" class="form-text text-muted"
-              >Insert Medication Name</small
-            >
-            }
-          </div>
-          <br />
-          <div class="row">
-            <div class="form-group col-md-7">
-              <input
-                type="number"
-                class="form-control"
-                id="dosage"
-                name="dosage"
-                formControlName="dosage"
-                aria-describedby="dosageHelp"
-                placeholder="Dosage"
-                autocomplete="off"
-              />
-              @if (ngForm.submitted && medicationForm.get('dosage')?.invalid) {
-              @if (medicationForm.get('dosage')?.errors?.['required']) {
-              <small class="form-text text-danger"> Dosage is required </small>
-              } @if (medicationForm.get('dosage')?.errors?.['min']) {
-              <small class="form-text text-danger">
-                Dosage should be positive Integer or Decimal
-              </small>
-              } } @else {
-              <small id="dosageHelp" class="form-text text-muted"
-                >Insert positive number (0.5, 1, 2)</small
-              >
-              }
-            </div>
-            <!-- <br> -->
-            <div class="form-group col-md-5">
-              <!-- <input type="number" class="form-control" id="dosage" aria-describedby="dosageHelp" placeholder="dosage" autocomplete="off"> -->
-              <select
-                class="form-select"
-                aria-label="Select Dosage Unit"
-                id="dosageUnit"
-                name="dosageUnit"
-                formControlName="dosageUnit"
-                aria-describedby="dosageUnitHelp"
-              >
-                <option selected value="">Select Dosage Unit</option>
-                @for (unitItem of unitItems; track unitItem.value) {
-                <option [value]="unitItem.value">{{ unitItem.label }}</option>
+  <div class="form-group">
+    <input
+      type="text"
+      class="form-control"
+      [ngClass]="{
+        invalid: medicationForm.get('medicationName')?.invalid
+      }"
+      id="medicationName"
+      name="medicationName"
+      formControlName="medicationName"
+      aria-describedby="medicationNameHelp"
+      placeholder="Medication Name"
+      autocomplete="off"
+    />
+    @if (ngForm.submitted &&
+    medicationForm.get('medicationName')?.invalid) { @if
+    (medicationForm.get('medicationName')?.errors?.['minlength']) {
+    <small class="form-text text-danger">
+      Medication Name should be at least 3 characters
+    </small>
+    } @if (medicationForm.get('medicationName')?.errors?.['required']) {
+    <small class="form-text text-danger">
+      Medication Name is required
+    </small>
+    } } @else {
+    <small id="medicationNameHelp" class="form-text text-muted"
+      >Insert Medication Name</small
+    >
+    }
+  </div>
+  <br />
+  <div class="row">
+    <div class="form-group col-md-7">
+      <input
+        type="number"
+        class="form-control"
+        id="dosage"
+        name="dosage"
+        formControlName="dosage"
+        aria-describedby="dosageHelp"
+        placeholder="Dosage"
+        autocomplete="off"
+      />
+      @if (ngForm.submitted && medicationForm.get('dosage')?.invalid) {
+      @if (medicationForm.get('dosage')?.errors?.['required']) {
+      <small class="form-text text-danger"> Dosage is required </small>
+      } @if (medicationForm.get('dosage')?.errors?.['min']) {
+      <small class="form-text text-danger">
+        Dosage should be positive Integer or Decimal
+      </small>
+      } } @else {
+      <small id="dosageHelp" class="form-text text-muted"
+        >Insert positive number (0.5, 1, 2)</small
+      >
+      }
+    </div>
+    <!-- <br> -->
+    <div class="form-group col-md-5">
+      <!-- <input type="number" class="form-control" id="dosage" aria-describedby="dosageHelp" placeholder="dosage" autocomplete="off"> -->
+      <select
+        class="form-select"
+        aria-label="Select Dosage Unit"
+        id="dosageUnit"
+        name="dosageUnit"
+        formControlName="dosageUnit"
+        aria-describedby="dosageUnitHelp"
+      >
+        <option selected value="">Select Dosage Unit</option>
+        @for (unitItem of unitItems; track unitItem.value) {
+        <option [value]="unitItem.value">{{ unitItem.label }}</option>
 
-                }
-              </select>
-              @if (ngForm.submitted &&
-              medicationForm.get('dosageUnit')?.errors?.['required']) {
-              <small class="form-text text-danger">
-                Dosage Unit is required
-              </small>
-              } @else {
-              <small id="dosageUnitHelp" class="form-text text-muted"
-                >Select Dosage Unit (capsules ...)</small
-              >
-              }
-            </div>
-          </div>
-          <hr />
-          <fieldset class="border p-2">
-            <legend>Frequency:</legend>
-            <div class="form-group">
-              <label class="form-label" for="Days">Days</label>
-              <br />
-              <div class="btn-group" role="group" aria-label="Days">
-                @for (dayItem of dayItems; track dayItem.value) {
-                <button
-                  type="button"
-                  class="btn btn-sm"
-                  [class]="(ngForm.value.day.includes(dayItem.value) ) ? 'btn-primary': 'btn-secondary'"
-                  (click)="selectDay(dayItem)"
-                >
-                  {{ dayItem.label }}
-                </button>
-                }
-                <input type="hidden" formControlName="day">
-              </div>
-              <br />
-              @if (ngForm.submitted &&
-              medicationForm.get('medicationName')?.errors?.['required']) {
-              <small class="form-text text-danger">
-                Select at least one day
-              </small>
-              }
-            </div>
-            <br />
-            <label class="form-label" for="time">Time</label>
-            <div class="row" formArrayName="frequency">
-              @for (item of frequency.controls; track $index; let i=$index) {
-              <div class="form-group col-md-4 mb-1" [formGroupName]="i">
-                <input
-                  type="time"
-                  class="form-control timepicker"
-                  min="00:00"
-                  max="23:59"
-                  [id]="i"
-                  [formControlName]="i"
-                  autocomplete="off"
-                />
-                @if (i > 0) {
-                  <button
-                  type="button"
-                  class="btn btn-sm text-danger"
-                  aria-label="remove"
-                  (click)="removeTime(i)"
-                  >
-                    <i class="bi bi-trash text-danger"></i>
-                  </button>
-                }
-                <br />
-              </div>
-              }
-            </div>
-            @if (frequency.length < 5) {
-            <button
-              type="button"
-              class="btn btn-link"
-              role="link"
-              (click)="addMoreTime()"
-            >
-              +Add time
-            </button>
-            }
-          </fieldset>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          (click)="closeModal()"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          form="medicationForm"
-          class="btn btn-primary"
-        >
-          Add
-        </button>
-      </div>
+        }
+      </select>
+      @if (ngForm.submitted &&
+      medicationForm.get('dosageUnit')?.errors?.['required']) {
+      <small class="form-text text-danger">
+        Dosage Unit is required
+      </small>
+      } @else {
+      <small id="dosageUnitHelp" class="form-text text-muted"
+        >Select Dosage Unit (capsules ...)</small
+      >
+      }
     </div>
   </div>
-</div>
+  <hr />
+  <fieldset class="border p-2">
+    <legend>Frequency:</legend>
+    <div class="form-group">
+      <label class="form-label" for="Days">Days</label>
+      <br />
+      <div class="btn-group" role="group" aria-label="Days">
+        @for (dayItem of dayItems; track dayItem.value) {
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class]="(ngForm.value.day.includes(dayItem.value) ) ? 'btn-primary': 'btn-secondary'"
+          (click)="selectDay(dayItem)"
+        >
+          {{ dayItem.label }}
+        </button>
+        }
+        <input type="hidden" formControlName="day">
+      </div>
+      <br />
+      @if (ngForm.submitted &&
+      medicationForm.get('day')?.errors?.['required']) {
+      <small class="form-text text-danger">
+        Select at least one day
+      </small>
+      }
+    </div>
+    <br />
+    <label class="form-label" for="time">Time</label>
+    <div class="row" formArrayName="frequency">
+      @for (item of frequency.controls; track $index; let i=$index) {
+      <div class="form-group col-md-4 mb-1" >
+        <input
+          type="time"
+          class="form-control timepicker"
+          min="00:00"
+          max="23:59"
+          [id]="i"
+          [name]="i"
+          [formControlName]="i"
+          autocomplete="off"
+        />
+        @if (i > 0) {
+          <button
+          type="button"
+          class="btn btn-sm text-danger"
+          aria-label="remove"
+          (click)="removeTime(i)"
+          >
+            <i class="bi bi-trash text-danger"></i>
+          </button>
+        }
+        <br />
+      </div>
+      }
+    </div>
+    @if (frequency.length < 5) {
+    <button
+      type="button"
+      class="btn btn-link"
+      role="link"
+      (click)="addMoreTime()"
+    >
+      +Add time
+    </button>
+    }
+    <br>
+    @if (frequency && ngForm.submitted && frequency.errors?.['hasDuplicateTime']) {
+    <small class="form-text text-danger">
+      Time {{frequency.errors?.['duplicateTime']}} is Duplicate
+    </small>
+    }
+  </fieldset>
+</form>
+</app-modal>

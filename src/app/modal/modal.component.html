@@ -1,0 +1,35 @@
+<div
+  class="modal"
+  id="exampleModalCenter"
+  role="dialog"
+  aria-labelledby="ModalComponent"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{confirmTitle}}</h5>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="close()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [attr.form]="formId"
+          class="btn btn-primary"
+          (click)="confirm()"
+        >
+        {{confirmTitle}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

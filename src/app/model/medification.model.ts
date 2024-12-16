@@ -5,15 +5,8 @@ export class MedicationModel {
   dosage!: number;
   dosageUnit?: UnitEnum;
   day!: DayEnum[];
-  frequency!: string[];;
+  frequency!: string[];
   issueDate!: string;
-
-  /**
-   *
-   */
-  constructor() {
-    // this.frequency = [];
-  }
 }
 
 export enum UnitEnum {
@@ -32,13 +25,12 @@ export enum DayEnum{
   Thu= 'Thursday',
   Fri= 'Friday',
   Sat= 'Saturday',
-  Sun= 'Sunday',
-  Everyday= 'Everyday',
+  Sun= 'Sunday'
 }
 
 // export class Frequency {
-  // day?: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday' | 'Everyday';
-  // time?: string[];
+//   day?: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday' | 'Everyday';
+//   time?: string;
 // }
 
 export class SelectItem {

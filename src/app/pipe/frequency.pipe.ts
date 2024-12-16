@@ -7,8 +7,7 @@ import { MedicationModel } from '../model/medification.model';
 export class FrequencyPipe implements PipeTransform {
 
   transform(value: MedicationModel): string {
-    console.log("🚀 ~ FrequencyPipe ~ transform ~ value:", value)
-    return `Every ${value.day.join(', ')} at ${value?.frequency?.join(' and ')}`;
+    return `Every ${(value.day.length > 6) ? ' day ': value.day.join(', ')} at ${value?.frequency?.join(' and ')}`;
   }
 
 }

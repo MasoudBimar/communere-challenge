@@ -3,7 +3,7 @@
   --bs-modal-width: 700px;
 }
 
-.ng-invalid .ng-touched {
+.ng-invalid.ng-touched {
   border-color: #dc3545;
   padding-right: calc(1.5em + .75rem);
 }

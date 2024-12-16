@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Component, ComponentRef, OnInit, signal, ViewChild, ViewContainerRef, WritableSignal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MedicationModel } from '../../model/medification.model';
 import { FrequencyPipe } from '../../pipe/frequency.pipe';
@@ -11,13 +10,14 @@ import { MedicationComponent } from '../medication/medication.component';
 
 @Component({
   selector: 'app-medication-list',
-  imports: [AsyncPipe, FrequencyPipe, DatePipe, FormsModule],
+  imports: [ FrequencyPipe, DatePipe, NgOptimizedImage],
   templateUrl: './medication-list.component.html',
   styleUrl: './medication-list.component.scss'
 })
 export class MedicationListComponent implements OnInit {
-  loading = false;
-  medications$: WritableSignal<MedicationModel[]> = signal([]);
+  loading = true;
+  logoPath = 'assets/medicator.png';
+  medications: WritableSignal<MedicationModel[]> = signal([]);
   searchCriteria: string='';
   search$: Subject<string>= new Subject<string>();
   @ViewChild('modalPlaceHolder', { read: ViewContainerRef }) componentRef?: ViewContainerRef;
@@ -35,7 +35,7 @@ export class MedicationListComponent implements OnInit {
       this.reloadData(criteria);
       });
   }
-  addMedication() {
+  addMedication(): void {
     if (this.componentRef) {
       const modalFormInstance: ComponentRef<MedicationComponent> =  this.modalService.openModal(this.componentRef);
       modalFormInstance.instance.closeClicked.subscribe(() => {
@@ -45,8 +45,7 @@ export class MedicationListComponent implements OnInit {
     }
   }
 
-  editItem(medicationItem: MedicationModel){
-    console.log("🚀 ~ MedicationListComponent ~ editItem ~ medicationItem:", medicationItem)
+  editItem(medicationItem: MedicationModel): void{
     if (this.componentRef) {
       const modalFormInstance: ComponentRef<MedicationComponent> =  this.modalService.openModal(this.componentRef, medicationItem);
       modalFormInstance.instance.closeClicked.subscribe(() => {
@@ -56,19 +55,17 @@ export class MedicationListComponent implements OnInit {
     }
   }
 
-  removeItem(index: string){
+  removeItem(index: string): void{
     this.medicationService.removeMedication(index);
     this.reloadData();
   }
 
-  search(event: Event){
-    console.log("🚀 ~ MedicationListComponent ~ search ~ e:", event )
+  search(event: Event): void{
     this.search$.next((event.target as HTMLTextAreaElement).value);
   }
 
-  reloadData(search: string=''){
-    this.medicationService.getMedications(search).subscribe(result=> {
-      this.medications$.set(result);
-    })
+  reloadData(search: string=''): void{
+    this.medications.set( this.medicationService.getMedications(search));
+    this.loading = false;
   }
 }

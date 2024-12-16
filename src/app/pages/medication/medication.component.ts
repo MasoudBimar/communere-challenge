@@ -1,12 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DayEnum, MedicationModel, SelectItem, UnitEnum } from '../../model/medification.model';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ModalComponent } from "../../modal/modal.component";
+import { DayEnum, MedicationModel, SelectItem, UnitEnum } from '../../model/medification.model';
 import { MedicationService } from '../../services/medication.service';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { duplicateTimeValidator } from '../../validators/duplicate-time.validator';
 
 @Component({
   selector: 'app-medication',
-  imports: [ReactiveFormsModule, JsonPipe, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ModalComponent],
   templateUrl: './medication.component.html',
   styleUrl: './medication.component.scss'
 })
@@ -24,12 +26,19 @@ export class MedicationComponent implements OnInit {
       dosage: [null, [Validators.required, Validators.min(0.1)]],
       dosageUnit: ['', Validators.required],
       day: ['', Validators.required],
-      frequency: this.formBuilder.array([this.formBuilder.control(['', Validators.required ])]),
-      issueDate: new Date(),
+      frequency: this.formBuilder.array([this.formBuilder.control([ undefined, Validators.required ])],duplicateTimeValidator),
+      issueDate: [new Date()],
     });
   }
   ngOnInit(): void {
     if (this.medicationModel) {
+      if (this.medicationModel) {
+        this.medicationModel.frequency.forEach(() => {
+          if (this.medicationModel && this.medicationModel.frequency.length > this.frequency.length) {
+            this.addMoreTime()
+          }
+        });
+      }
       this.medicationForm.patchValue(this.medicationModel);
     }
   }
@@ -38,17 +47,17 @@ export class MedicationComponent implements OnInit {
     return this.medicationForm.get('frequency') as FormArray;
   }
 
-  addMoreTime() {
+  addMoreTime(): void {
     if (this.frequency.length < 5) {
-      this.frequency.push(this.formBuilder.control(''));
+      this.frequency.push(this.formBuilder.control([undefined , [Validators.required]]));
     }
   }
 
-  removeTime(timeIndex: number) {
+  removeTime(timeIndex: number): void {
     this.frequency.removeAt(timeIndex);
   }
 
-  selectDay(day:SelectItem){
+  selectDay(day:SelectItem): void{
     if (this.medicationForm.value.day.includes(day.value)) {
       this.medicationForm.patchValue({'day': this.medicationForm.value.day.filter((item: string) => item !== day.value)});
     }else{
@@ -56,19 +65,18 @@ export class MedicationComponent implements OnInit {
     }
   }
 
-  closeModal(){
+  closeModal(): void{
     this.closeClicked.emit();
   }
 
-  submit(){
-    console.log("🚀 ~ MedicationComponent ~ submit ~ e:", this.medicationForm)
+  submit(): void{
     if (this.medicationForm.valid) {
       if (this.medicationForm.value.id) {
         this.medicationService.updateMedication(this.medicationForm.value);
       } else {
         this.medicationService.addMedications(this.medicationForm.value);
-        this.closeClicked.emit();
       }
+      this.closeClicked.emit();
     }
   }
 }
