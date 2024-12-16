@@ -30,7 +30,7 @@ export class MedicationService {
   updateMedication(model: MedicationModel): MedicationModel[] {
     const medications = this.storageService.getMedications();
     const medicationIdx = medications.findIndex(medicationItem => medicationItem.id === model.id);
-    if (medicationIdx) {
+    if (medicationIdx !== -1) {
       medications[medicationIdx] = model;
     }
     this.storageService.updateMedications(medications);
