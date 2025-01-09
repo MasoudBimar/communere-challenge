@@ -4,52 +4,45 @@
     <h1 class="title">Medicator</h1>
   </section>
   <section class="medicator-toolbar">
-    <!-- <div class="search-container"> -->
       <input class="search-box" type="text" placeholder="Search medications" (input)="search($event)">
-    <!-- </div> -->
       <button type="button" class="btn btn-sm btn-outline-secondary add-button" (click)="addMedication()">Add Medication</button>
   </section>
 
-  @if (loading) {
-  <p class="loading">Loading...</p>
-  } @else {
-    <table class="table table-bordered table-hover table-striped">
-      <thead class="table-secondary">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Medication</th>
-          <th scope="col">Dosage</th>
-          <th scope="col">Frequency</th>
-          <th scope="col">Last Updated</th>
-          <th scope="col">Actions</th>
+  <table class="table table-bordered table-hover table-striped">
+    <thead class="table-secondary">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Medication</th>
+        <th scope="col">Dosage</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Last Updated</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody >
+      @for(item of medications(); track item.medicationName; let index = $index){
+
+        <tr >
+          <th scope="row">{{index + 1}}</th>
+          <td>{{item.medicationName}}</td>
+          <td>{{item.dosage}} &nbsp;  {{item.dosageUnit}} </td>
+          <td>{{item | frequencyPipe}}</td>
+          <td>{{item.issueDate | date}}</td>
+          <td>
+            <button type="button" class="btn btn-sm text-danger" aria-label="remove" (click)="editItem(item)">
+              <i class="bi bi-pencil text-primary"></i>
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-sm text-danger" aria-label="remove" (click)="removeItem(item.id)">
+              <i class="bi bi-trash text-danger"></i>
+            </button>
+          </td>
         </tr>
-      </thead>
-      <tbody >
-        @for(item of medications(); track item.medicationName; let index = $index){
-
-          <tr >
-            <th scope="row">{{index + 1}}</th>
-            <td>{{item.medicationName}}</td>
-            <td>{{item.dosage}} &nbsp;  {{item.dosageUnit}} </td>
-            <td>{{item | frequencyPipe}}</td>
-            <td>{{item.issueDate | date}}</td>
-            <td>
-              <button type="button" class="btn btn-sm text-danger" aria-label="remove" (click)="editItem(item)">
-                <i class="bi bi-pencil text-primary"></i>
-              </button>
-              &nbsp;
-              <button type="button" class="btn btn-sm text-danger" aria-label="remove" (click)="removeItem(item.id)">
-                <i class="bi bi-trash text-danger"></i>
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <p>There are no items.</p>
-        }
-      </tbody>
-    </table>
-
-  }
+      } @empty {
+        <p>There are no items.</p>
+      }
+    </tbody>
+  </table>
 </div>
 
 <ng-container #modalPlaceHolder></ng-container>

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { MedicationListComponent } from "./pages/medication-list/medication-list.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MedicationListComponent],
+  imports: [MedicationListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
